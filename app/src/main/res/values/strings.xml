@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Calculator</string>
+    <string name="display_placeholder">0123456789</string>
+</resources>
