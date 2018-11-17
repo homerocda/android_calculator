@@ -5,10 +5,16 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 
+enum class Operations {
+    NOOP, ADD, SUB, MUL, DIV
+}
+
 class KeypadActivity : AppCompatActivity() {
 
     private var lhs = ""
     private var rhs = ""
+    private var currentOperation = Operations.NOOP
+
     private val display : TextView
         get() = findViewById(R.id.tv_display)
 
@@ -21,6 +27,9 @@ class KeypadActivity : AppCompatActivity() {
         val len = rhs.length
         if (len < 10) {
             if (digit != '0' || len > 0) {
+                if (digit == '.' && len == 0) {
+                    rhs += '0'
+                }
                 rhs += digit
                 display.text = rhs
             }
@@ -44,13 +53,26 @@ class KeypadActivity : AppCompatActivity() {
 
     fun onOperator(view: View?) {
         when (view?.id) {
-            R.id.op_add -> doAdd()
-            R.id.op_sub -> doSub()
-            R.id.op_mul -> doMul()
-            R.id.op_div -> doDiv()
-            R.id.dot -> doDot()
+            R.id.op_add -> pushOperator(Operations.ADD)
+            R.id.op_sub -> pushOperator(Operations.SUB)
+            R.id.op_mul -> pushOperator(Operations.MUL)
+            R.id.op_div -> pushOperator(Operations.DIV)
+            R.id.dot -> pushDigit('.')
             R.id.equals -> doEquals()
         }
+    }
+
+    private fun pushOperator(operation: Operations) {
+        if (currentOperation != Operations.NOOP) {
+            doEquals()
+        }
+    }
+
+    private fun getNumber(numStr: String) : Double {
+        if (numStr.isEmpty()) {
+            return 0.0
+        }
+        return numStr.toDouble()
     }
 
     private fun doAdd() {}
@@ -61,9 +83,9 @@ class KeypadActivity : AppCompatActivity() {
 
     private fun doDiv() {}
 
-    private fun doDot() {
-        pushDigit('.')
-    }
+    private fun doEquals() {
+        when(currentOperation) {
 
-    private fun doEquals() {}
+        }
+    }
 }
