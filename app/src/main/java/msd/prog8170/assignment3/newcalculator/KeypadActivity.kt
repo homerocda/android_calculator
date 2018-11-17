@@ -7,7 +7,9 @@ import android.widget.TextView
 
 class KeypadActivity : AppCompatActivity() {
 
-    private var currentNumber = 0
+    private var currentNumber = 0.0
+    private var dotPushed = false
+    private var factor = 1
     private val display : TextView
         get() = findViewById(R.id.tv_display)
 
@@ -17,6 +19,9 @@ class KeypadActivity : AppCompatActivity() {
     }
 
     private fun pushDigit(digit: Int) {
+        if (dotPushed) {
+            factor *= 10
+        }
         currentNumber = currentNumber * 10 + digit
         display.text = currentNumber.toString()
     }
@@ -35,4 +40,29 @@ class KeypadActivity : AppCompatActivity() {
             R.id.digit_9 -> pushDigit(9)
         }
     }
+
+    fun onOperator(view: View?) {
+        when (view?.id) {
+            R.id.op_add -> doAdd()
+            R.id.op_sub -> doSub()
+            R.id.op_mul -> doMul()
+            R.id.op_div -> doDiv()
+            R.id.dot -> doDot()
+            R.id.equals -> doEquals()
+        }
+    }
+
+    private fun doAdd() {}
+
+    private fun doSub() {}
+
+    private fun doMul() {}
+
+    private fun doDiv() {}
+
+    private fun doDot() {
+        dotPushed = true
+    }
+
+    private fun doEquals() {}
 }
