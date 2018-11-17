@@ -1,5 +1,6 @@
 package msd.prog8170.assignment3.newcalculator
 
+import junit.framework.TestSuite
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -11,7 +12,7 @@ const val PRECISION = 0.0000001
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-class CalculatorUnitTests {
+class CalculatorUnitTests : TestSuite() {
     @Test
     fun addition_Input0And0_Returns0() {
         // Arrange
