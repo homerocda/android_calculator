@@ -192,4 +192,49 @@ class CalculatorUnitTests : TestSuite() {
         // Assert
         assertEquals(expected, result, PRECISION)
     }
+
+    @Test
+    fun division_Input1And1_Returns1() {
+        // Arrange
+        val calc = Calculator()
+        val lhs = 1.0
+        val rhs = 1.0
+        val expected = 1.0
+
+        // Act
+        val result = calc.division(lhs, rhs)
+
+        // Assert
+        assertEquals(expected, result, PRECISION)
+    }
+
+    @Test
+    fun division_Input2And1_Returns2() {
+        // Arrange
+        val calc = Calculator()
+        val lhs = 2.0
+        val rhs = 1.0
+        val expected = 2.0
+
+        // Act
+        val result = calc.division(lhs, rhs)
+
+        // Assert
+        assertEquals(expected, result, PRECISION)
+    }
+
+    @Test
+    fun division_Input9And3_Returns3() {
+        // Arrange
+        val calc = Calculator()
+        val lhs = 9.0
+        val rhs = 3.0
+        val expected = 3.0
+
+        // Act
+        val result = calc.division(lhs, rhs)
+
+        // Assert
+        assertEquals(expected, result, PRECISION)
+    }
 }
