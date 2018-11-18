@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import java.text.DecimalFormat
 
 enum class Operations {
     NOOP, ADD, SUB, MUL, DIV
@@ -11,9 +12,10 @@ enum class Operations {
 
 class KeypadActivity : AppCompatActivity() {
 
-    private var lhs = ""
-    private var rhs = ""
+    private val calc = Calculator()
     private var currentOperation = Operations.NOOP
+    private var currentOperand = ""
+    private var lastResult = ""
 
     private val display : TextView
         get() = findViewById(R.id.tv_display)
@@ -23,16 +25,15 @@ class KeypadActivity : AppCompatActivity() {
         setContentView(R.layout.activity_keypad)
     }
 
+    private fun updateDisplay() {
+        display.text = currentOperand
+    }
+
     private fun pushDigit(digit: Char) {
-        val len = rhs.length
+        val len = currentOperand.length
         if (len < 10) {
-            if (digit != '0' || len > 0) {
-                if (digit == '.' && len == 0) {
-                    rhs += '0'
-                }
-                rhs += digit
-                display.text = rhs
-            }
+            currentOperand = if (currentOperand == "0") digit.toString() else currentOperand + digit
+            updateDisplay()
         }
     }
 
@@ -48,6 +49,7 @@ class KeypadActivity : AppCompatActivity() {
             R.id.digit_7 -> pushDigit('7')
             R.id.digit_8 -> pushDigit('8')
             R.id.digit_9 -> pushDigit('9')
+            R.id.dot -> pushDigit('.')
         }
     }
 
@@ -57,7 +59,6 @@ class KeypadActivity : AppCompatActivity() {
             R.id.op_sub -> pushOperator(Operations.SUB)
             R.id.op_mul -> pushOperator(Operations.MUL)
             R.id.op_div -> pushOperator(Operations.DIV)
-            R.id.dot -> pushDigit('.')
             R.id.equals -> doEquals()
         }
     }
@@ -65,7 +66,11 @@ class KeypadActivity : AppCompatActivity() {
     private fun pushOperator(operation: Operations) {
         if (currentOperation != Operations.NOOP) {
             doEquals()
+        } else {
+            lastResult = if (currentOperand.isNotEmpty()) currentOperand else lastResult
+            currentOperand = ""
         }
+        currentOperation = operation
     }
 
     private fun getNumber(numStr: String) : Double {
@@ -75,17 +80,24 @@ class KeypadActivity : AppCompatActivity() {
         return numStr.toDouble()
     }
 
-    private fun doAdd() {}
-
-    private fun doSub() {}
-
-    private fun doMul() {}
-
-    private fun doDiv() {}
-
     private fun doEquals() {
-        when(currentOperation) {
-
+        if (currentOperand.isEmpty()) {
+            if (lastResult.isEmpty()) {
+                return
+            }
+            currentOperand = lastResult
         }
+        var result = 0.0
+        when(currentOperation) {
+            Operations.ADD -> result = calc.addition(getNumber(lastResult), getNumber(currentOperand))
+            Operations.SUB -> result = calc.subtraction(getNumber(lastResult), getNumber(currentOperand))
+            Operations.MUL -> result = calc.multiplication(getNumber(lastResult), getNumber(currentOperand))
+            Operations.DIV -> result = calc.division(getNumber(lastResult), getNumber(currentOperand))
+        }
+        val numberFormat = DecimalFormat("#.#########")
+        lastResult = numberFormat.format(result)
+        currentOperand = ""
+        display.text = lastResult
+        currentOperation = Operations.NOOP
     }
 }
