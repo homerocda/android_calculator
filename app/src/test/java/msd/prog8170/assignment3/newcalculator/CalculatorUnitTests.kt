@@ -1,3 +1,10 @@
+/**
+ * Mobile Solutions Development - Fall 2018
+ * PROG8170 - Software Quality Assurance Techniques
+ * Assignment #3
+ * Student: Homero Cardoso de Almeida
+ * Student ID: 8155962
+ */
 package msd.prog8170.assignment3.newcalculator
 
 import junit.framework.TestSuite
@@ -5,12 +12,13 @@ import org.junit.Test
 
 import org.junit.Assert.*
 
+/**
+ * The precision to be used for double result assertions.
+ */
 const val PRECISION = 0.0000001
 
 /**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
+ * Unit test for the Calculator class.
  */
 class CalculatorUnitTests : TestSuite() {
     @Test
